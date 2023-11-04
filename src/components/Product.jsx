@@ -1,7 +1,23 @@
+import { useStateValue } from "../context/stateProvider";
 import "./Product.css";
 import PropTypes from "prop-types";
 
-function Product({ title, price, image, rating }) {
+function Product({ id, title, price, image, rating }) {
+  const [{ basket }, dispatch] = useStateValue();
+  console.log(basket);
+
+  const addToBasket = () => {
+    dispatch({
+      type: "ADD_TO_BASKET",
+      item: {
+        id,
+        title,
+        image,
+        price,
+        rating,
+      },
+    });
+  };
   return (
     <div className="product">
       <div className="product__info">
@@ -19,7 +35,9 @@ function Product({ title, price, image, rating }) {
         </div>
       </div>
       <img src={image} alt="" />
-      <button className="product__button">Add to basket</button>
+      <button className="product__button" onClick={addToBasket}>
+        Add to basket
+      </button>
     </div>
   );
 }
@@ -27,6 +45,7 @@ function Product({ title, price, image, rating }) {
 export default Product;
 
 Product.propTypes = {
+  id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,

@@ -1,14 +1,20 @@
 import "./Header.css";
 import { IoSearch } from "react-icons/io5";
 import { IoMdBasket } from "react-icons/io";
+import { Link } from "react-router-dom";
+import { useStateValue } from "../context/stateProvider";
+
 function Header() {
+  const [{ basket }] = useStateValue();
   return (
     <div className="header">
-      <img
-        className="header__logo"
-        src="https://companieslogo.com/img/orig/AMZN_BIG.D-8fb0be81.png?t=1632523695"
-        alt=""
-      />
+      <Link to="/">
+        <img
+          className="header__logo"
+          src="https://companieslogo.com/img/orig/AMZN_BIG.D-8fb0be81.png?t=1632523695"
+          alt=""
+        />
+      </Link>
 
       <div className="header__search">
         <input type="text" className="header__searchInput" />
@@ -28,10 +34,15 @@ function Header() {
           <span className="header__optionLineOne">Your</span>
           <span className="header__optionLineTwo">Prime</span>
         </div>
-        <div className="header__optionBasket">
-          <IoMdBasket />
-          <span className="header__optionLineTwo header__basketCount">0</span>
-        </div>
+
+        <Link to="/checkout">
+          <div className="header__optionBasket">
+            <IoMdBasket />
+            <span className="header__optionLineTwo header__basketCount">
+              {basket?.length}
+            </span>
+          </div>
+        </Link>
       </div>
     </div>
   );
