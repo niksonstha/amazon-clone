@@ -4,6 +4,10 @@ import Header from "./components/Header";
 import Checkout from "./screens/Checkout";
 import Home from "./screens/Home";
 import Login from "./screens/Login";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+import { useStateValue } from "./context/stateProvider";
 
 function HeaderContainer() {
   const location = useLocation();
@@ -12,6 +16,25 @@ function HeaderContainer() {
 }
 
 function App() {
+  // eslint-disable-next-line no-empty-pattern
+  const [{}, dispatch] = useStateValue();
+  useEffect(() => {
+    onAuthStateChanged(auth, (authUser) => {
+      console.log(authUser);
+      if (authUser) {
+        dispatch({
+          type: "SET_USER",
+          user: authUser,
+        });
+      } else {
+        dispatch({
+          type: "SET_USER",
+          user: null,
+        });
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <BrowserRouter>
       <div className="app">

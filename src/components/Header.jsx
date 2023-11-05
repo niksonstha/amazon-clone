@@ -3,9 +3,15 @@ import { IoSearch } from "react-icons/io5";
 import { IoMdBasket } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { useStateValue } from "../context/stateProvider";
+import { signOut } from "firebase/auth";
+import { auth } from "../firebase";
 
 function Header() {
-  const [{ basket }] = useStateValue();
+  const [{ basket, user }] = useStateValue();
+
+  const handlerAuthentication = () => {
+    signOut(auth);
+  };
   return (
     <div className="header">
       <Link to="/">
@@ -22,10 +28,14 @@ function Header() {
       </div>
 
       <div className="header__nav">
-        <Link to="/login">
-          <div className="header__option">
-            <span className="header__optionLineOne">Hello guest</span>
-            <span className="header__optionLineTwo">Sign In</span>
+        <Link to={"/login"}>
+          <div className="header__option" onClick={handlerAuthentication}>
+            <span className="header__optionLineOne">
+              Hello {user ? user?.email : "guest"}
+            </span>
+            <span className="header__optionLineTwo">
+              {user ? "sign out" : "sign in"}
+            </span>
           </div>
         </Link>
         <div className="header__option">

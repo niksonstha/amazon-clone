@@ -1,7 +1,18 @@
+import { useEffect } from "react";
 import Product from "../components/Product";
 import "./Home.css";
+import { useNavigate } from "react-router-dom";
+import { useStateValue } from "../context/stateProvider";
 
 function Home() {
+  const [{ user }] = useStateValue();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <div className="home">
       <div className="home__container">
